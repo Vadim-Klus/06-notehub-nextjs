@@ -22,7 +22,7 @@ export default function NotesClient() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["notes", { page, perPage, search: debouncedSearch }],
     queryFn: () => fetchNotes({ page, perPage, search: debouncedSearch }),
-    placeholderData: (prev) => prev,
+    placeholderData: (prevData) => prevData,
   });
 
   useEffect(() => {
