@@ -10,8 +10,13 @@ import Pagination from "@/components/Pagination/Pagination";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import styles from "./Notes.module.css";
+import type { FetchNotesResponse } from "@/lib/api";
 
-export default function NotesClient() {
+interface NotesClientProps {
+  initialNotes: FetchNotesResponse;
+}
+
+export default function NotesClient({ initialNotes }: NotesClientProps) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +28,8 @@ export default function NotesClient() {
     queryKey: ["notes", { page, perPage, search: debouncedSearch }],
     queryFn: () => fetchNotes({ page, perPage, search: debouncedSearch }),
     placeholderData: (prevData) => prevData,
+    initialData:
+      page === 1 && debouncedSearch === "" ? initialNotes : undefined,
   });
 
   useEffect(() => {

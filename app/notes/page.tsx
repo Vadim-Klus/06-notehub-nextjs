@@ -9,14 +9,16 @@ import {
 export default async function NotesPage() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["notes", { page: 1, perPage: 12, search: "" }],
-    queryFn: () => fetchNotes({ page: 1, perPage: 12 }),
+  const params = { page: 1, perPage: 12, search: "" };
+
+  const data = await queryClient.fetchQuery({
+    queryKey: ["notes", params],
+    queryFn: () => fetchNotes(params),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient />
+      <NotesClient initialNotes={data} />
     </HydrationBoundary>
   );
 }
